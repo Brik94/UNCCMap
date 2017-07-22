@@ -1,4 +1,4 @@
-package com.example.briannak.searchabledictionary;
+package com.uncc.briannak.unccmap;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -17,6 +17,8 @@ import android.support.v7.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+
+
 
 /**
  * The main activity for the dictionary.

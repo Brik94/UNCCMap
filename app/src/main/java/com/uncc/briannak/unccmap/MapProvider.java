@@ -1,4 +1,4 @@
-package com.example.briannak.searchabledictionary;
+package com.uncc.briannak.unccmap;
 
 import android.app.SearchManager;
 import android.content.ContentProvider;
@@ -16,14 +16,14 @@ public class MapProvider extends ContentProvider
 {
     String TAG = "MapProvider";
 
-    public static String AUTHORITY = "com.example.briannak.searchabledictionary.MapProvider";
+    public static String AUTHORITY = "com.uncc.briannak.unccmap.MapProvider";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/dictionary");
 
     // MIME types used for searching words or looking up a single definition
     public static final String WORDS_MIME_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
-                                                  "/vnd.example.briannak.searchabledictonary";
+                                                  "/vnd.uncc.briannak.unccmap";
     public static final String DEFINITION_MIME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
-                                                       "/vnd.example.briannak.searchabledictonary";
+                                                       "/vnd.uncc.briannak.unccmap";
 
     private MapDatabase mDictionary;
 

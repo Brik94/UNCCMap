@@ -1,4 +1,4 @@
-package com.example.briannak.searchabledictionary;
+package com.uncc.briannak.unccmap;
 
 import android.app.SearchManager;
 import android.content.ContentValues;
@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.util.Log;
+
+
 
 import java.io.BufferedReader;
 import java.io.IOException;

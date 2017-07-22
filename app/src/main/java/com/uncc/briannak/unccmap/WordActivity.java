@@ -1,4 +1,4 @@
-package com.example.briannak.searchabledictionary;
+package com.uncc.briannak.unccmap;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -15,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import android.widget.TextView;
+
+
 
 /**
  * Displays a word and its definition.

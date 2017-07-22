@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.briannak.searchabledictionary">
+    package="com.uncc.briannak.unccmap">
 
 
     <application android:label="@string/app_name"
@@ -9,7 +9,7 @@
         android:theme="@style/AppTheme" >
 
     <!-- The default activity of the app; displays search results. -->
-    <activity android:name=".SearchableDictionary"
+    <activity android:name="com.uncc.briannak.unccmap.SearchableDictionary"
         android:launchMode="singleTop">
 
         <intent-filter>
@@ -30,11 +30,11 @@
     </activity>
 
     <!-- Displays the definition of a word. -->
-    <activity android:name=".WordActivity" />
+    <activity android:name="com.uncc.briannak.unccmap.WordActivity" />
 
     <!-- Provides search suggestions for words and their definitions. -->
-    <provider android:name=".MapProvider"
-        android:authorities="com.example.briannak.searchabledictionary.MapProvider"
+    <provider android:name="com.uncc.briannak.unccmap.MapProvider"
+        android:authorities="com.uncc.briannak.unccmap.MapProvider"
         android:exported="false"/>
 
     <!-- Points to searchable activity so the whole app can invoke search. -->
