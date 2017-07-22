@@ -1,0 +1,44 @@
+39,Aux. Services Building,General
+46,Barnhardt,General
+46,Student Activity Center,General
+46,Halton Arena,General
+31,Cafeteria Activities Bld.,General
+05,Cone University Center,General
+4b,Counseling Center,General
+55a,Facilities Management,General
+23,Facilities Operations,General
+23,Parking Services,General
+67,Hayes Stadium,General
+37,McMillan Greenhouse,General
+49,Miltimore-Wallis Center,General
+55b,Police,General
+65,Student Health Center,General
+48,Cato Hall,Administration
+48,Admissions,Administration
+01,Kennedy,Administration
+11,King,Administration
+11,Registrar,Administration
+36,Reese,Administration
+36,Student Accounts,Administration
+05,Cone University Center,Dining Services
+34,Prospector,Dining Services
+80,PORTAL,Dining Services
+29,Residence Dining Hall,Dining Services
+82,South Village Crossing,Dining Services
+69,Student Union,Dining Services
+13,Belk Plaza,Places of Interest
+54,Bissel House,Places of Interest
+54,Chancellor's Residence,Places of Interest
+71,Foundation,Places of Interest
+86,Foundation Annex,Places of Interest
+77,Halton Wagner Complex,Places of Interest
+64,Harris Alumni Center,Places of Interest
+88,Hauser Alumni Pavilion,Places of Interest
+44,Irwin Belk Track & Field,Places of Interest
+15,Niner House,Places of Interest
+14,Receiving/Stores,Places of Interest
+79,Richardson Stadium,Places of Interest
+78,Rose Football Center,Places of Interest
+78,Susie Hardwood Garden,Places of Interest
+78,Van Landingham Glen,Places of Interest
+43,Wells Fargo Fieldhouse,Places of Interest

@@ -1,0 +1,30 @@
+4a,Atkins
+16,Barnard
+17,Belk Gym
+68,Bioinformatics
+38,Burson
+42,Cameron Hall
+52,College of Education
+32,Colvard
+08,Denny
+57,Duke Centennial Hall
+72,EPIC
+45,Fretwell
+35,Friday
+09,Garinger
+58,Grigg Hall
+63,Health & Human Services
+85,High School
+87,Johnson Band Center
+62,Kulwicki Laboratory
+02,Macy
+20,McEniry
+18,Memorial Hall
+75,Motorsports Research
+80,PORTAL
+51,Robinson Hall
+19,Rowe
+12,Smith
+41,Storrs
+10,Winningham
+56,Woodward Hall
