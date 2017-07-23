@@ -18,17 +18,25 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 /**
  * The main activity for the dictionary.
  * Displays search results triggered by the search dialog and handles
  * actions from search suggestions.
+ * https://stackoverflow.com/questions/20052852/how-to-show-a-floating-view-on-google-map-just-like-the-search-bar-in-this-image
  */
-public class SearchableDictionary extends AppCompatActivity
+public class SearchableDictionary extends AppCompatActivity implements OnMapReadyCallback
 {
     private TextView mTextView;
     private ListView mListView;
+    private GoogleMap mMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -37,10 +45,23 @@ public class SearchableDictionary extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
         mTextView = (TextView) findViewById(R.id.text);
         mListView = (ListView) findViewById(R.id.list);
 
         handleIntent(getIntent());
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        mMap = map;
+        map.addMarker(new MarkerOptions().position(new LatLng(35.306105, -80.73445)).title("Marker"));
+        //map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(35.306105, -80.73445), 15));
     }
 
     @Override
