@@ -32,11 +32,11 @@ public class MapDatabase
     public static final String SEARCH_CODE = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public static final String BUILDING_NAME = SearchManager.SUGGEST_COLUMN_TEXT_2;
 
-    private static final String DATABASE_NAME = "mappdata";
-    private static final String FTS_VIRTUAL_TABLE = "FTSmapdata";
+    private static final String DATABASE_NAME = "UNCCMAP";
+    private static final String FTS_VIRTUAL_TABLE = "FTSACBUILDINGS";
     private static final int DATABASE_VERSION = 2;
 
-    private final DictionaryOpenHelper mDatabaseOpenHelper;
+    private final MapDBOpenHelper mDatabaseOpenHelper;
     private static final HashMap<String,String> mColumnMap = buildColumnMap();
 
     /**
@@ -45,7 +45,7 @@ public class MapDatabase
      */
     public MapDatabase(Context context)
     {
-        mDatabaseOpenHelper = new DictionaryOpenHelper(context);
+        mDatabaseOpenHelper = new MapDBOpenHelper(context);
     }
 
     /**
@@ -72,7 +72,7 @@ public class MapDatabase
      * @param columns The columns to include, if null then all are included
      * @return Cursor positioned to matching word, or null if not found.
      */
-    public Cursor getWord(String rowId, String[] columns)
+    public Cursor getCode(String rowId, String[] columns)
     {
         String selection = "rowid = ?";
         String[] selectionArgs = new String[] {rowId};
@@ -87,7 +87,7 @@ public class MapDatabase
      * @param columns The columns to include, if null then all are included
      * @return Cursor over all words that match, or null if none found.
      */
-    public Cursor getWordMatches(String query, String[] columns) 
+    public Cursor getCodeMatches(String query, String[] columns)
     {
         String selection = SEARCH_CODE + " MATCH ?";
         String[] selectionArgs = new String[] {query+"*"};
@@ -131,7 +131,7 @@ public class MapDatabase
     /**
      * This creates/opens the database.
      */
-    private static class DictionaryOpenHelper extends SQLiteOpenHelper 
+    private static class MapDBOpenHelper extends SQLiteOpenHelper
     {
         private final Context mHelperContext;
         private SQLiteDatabase mDatabase;
@@ -146,7 +146,7 @@ public class MapDatabase
                             SEARCH_CODE + ", " +
                             BUILDING_NAME + ");";
 
-        DictionaryOpenHelper(Context context) 
+        MapDBOpenHelper(Context context)
         {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             mHelperContext = context;
@@ -157,13 +157,13 @@ public class MapDatabase
         {
             mDatabase = db;
             mDatabase.execSQL(FTS_TABLE_CREATE);
-            loadDictionary();
+            loadMapDB();
         }
 
         /**
          * Starts a thread to load the database table with words
          */
-        private void loadDictionary() 
+        private void loadMapDB()
         {
             new Thread(new Runnable() 
             {

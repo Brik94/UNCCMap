@@ -46,8 +46,8 @@ public class WordActivity extends AppCompatActivity
         {
             cursor.moveToFirst();
 
-            TextView word = (TextView) findViewById(R.id.word);
-            TextView definition = (TextView) findViewById(R.id.definition);
+            TextView word = (TextView) findViewById(R.id.code);
+            TextView definition = (TextView) findViewById(R.id.building);
 
             int wIndex = cursor.getColumnIndexOrThrow(MapDatabase.SEARCH_CODE);
             int dIndex = cursor.getColumnIndexOrThrow(MapDatabase.BUILDING_NAME);

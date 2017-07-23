@@ -17,19 +17,19 @@ public class MapProvider extends ContentProvider
     String TAG = "MapProvider";
 
     public static String AUTHORITY = "com.uncc.briannak.unccmap.MapProvider";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/dictionary");
+    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/map");
 
     // MIME types used for searching words or looking up a single definition
-    public static final String WORDS_MIME_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
+    public static final String CODE_MIME_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE +
                                                   "/vnd.uncc.briannak.unccmap";
-    public static final String DEFINITION_MIME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
+    public static final String BUILDING_MIME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
                                                        "/vnd.uncc.briannak.unccmap";
 
     private MapDatabase mDictionary;
 
     // UriMatcher stuff
-    private static final int SEARCH_WORDS = 0;
-    private static final int GET_WORD = 1;
+    private static final int SEARCH_CODE = 0;
+    private static final int GET_BUILDING = 1;
     private static final int SEARCH_SUGGEST = 2;
     private static final int REFRESH_SHORTCUT = 3;
     private static final UriMatcher sURIMatcher = buildUriMatcher();
@@ -42,8 +42,8 @@ public class MapProvider extends ContentProvider
         UriMatcher matcher =  new UriMatcher(UriMatcher.NO_MATCH);
         
         // to get definitions...
-        matcher.addURI(AUTHORITY, "dictionary", SEARCH_WORDS);
-        matcher.addURI(AUTHORITY, "dictionary/#", GET_WORD);
+        matcher.addURI(AUTHORITY, "map", SEARCH_CODE);
+        matcher.addURI(AUTHORITY, "map/#", GET_BUILDING);
         
         // to get suggestions...
         matcher.addURI(AUTHORITY, SearchManager.SUGGEST_URI_PATH_QUERY, SEARCH_SUGGEST);
@@ -87,15 +87,15 @@ public class MapProvider extends ContentProvider
                 }
                 return getSuggestions(selectionArgs[0]);
                 
-            case SEARCH_WORDS:
+            case SEARCH_CODE:
                 if (selectionArgs == null) 
                 {
                   throw new IllegalArgumentException("selectionArgs must be provided for the Uri: " + uri);
                 }
                 return search(selectionArgs[0]);
                 
-            case GET_WORD:
-                return getWord(uri);
+            case GET_BUILDING:
+                return getCode(uri);
                 
             case REFRESH_SHORTCUT:
                 return refreshShortcut(uri);
@@ -115,7 +115,7 @@ public class MapProvider extends ContentProvider
           MapDatabase.BUILDING_NAME,
           SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID};
 
-          return mDictionary.getWordMatches(query, columns);
+          return mDictionary.getCodeMatches(query, columns);
     }
 
     private Cursor search(String query) 
@@ -127,10 +127,10 @@ public class MapProvider extends ContentProvider
           MapDatabase.SEARCH_CODE,
           MapDatabase.BUILDING_NAME};
       
-      	  return mDictionary.getWordMatches(query, columns);
+      	  return mDictionary.getCodeMatches(query, columns);
     }
 
-    private Cursor getWord(Uri uri) 
+    private Cursor getCode(Uri uri)
     {
       String rowId = uri.getLastPathSegment();
       String[] columns = new String[] 
@@ -138,7 +138,7 @@ public class MapProvider extends ContentProvider
           MapDatabase.SEARCH_CODE,
           MapDatabase.BUILDING_NAME};
 
-          return mDictionary.getWord(rowId, columns);
+          return mDictionary.getCode(rowId, columns);
     }
 
     private Cursor refreshShortcut(Uri uri) 
@@ -152,7 +152,7 @@ public class MapProvider extends ContentProvider
           SearchManager.SUGGEST_COLUMN_SHORTCUT_ID,
           SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID};
 
-          return mDictionary.getWord(rowId, columns);
+          return mDictionary.getCode(rowId, columns);
     }
 
     /**
@@ -164,10 +164,10 @@ public class MapProvider extends ContentProvider
     {
         switch (sURIMatcher.match(uri)) 
         {
-            case SEARCH_WORDS:
-                return WORDS_MIME_TYPE;
-            case GET_WORD:
-                return DEFINITION_MIME_TYPE;
+            case SEARCH_CODE:
+                return CODE_MIME_TYPE;
+            case GET_BUILDING:
+                return BUILDING_MIME_TYPE;
             case SEARCH_SUGGEST:
                 return SearchManager.SUGGEST_MIME_TYPE;
             case REFRESH_SHORTCUT:

@@ -77,7 +77,8 @@ public class SearchableDictionary extends AppCompatActivity
     private void showResults(String query) 
     {
 
-        Cursor cursor = managedQuery(MapProvider.CONTENT_URI, null, null, new String[] {query}, null);
+        Cursor cursor = getContentResolver().query(MapProvider.CONTENT_URI, null, null, new String[]{query}, null);
+        //managedQuery(MapProvider.CONTENT_URI, null, null, new String[] {query}, null);
 
         if (cursor == null) 
         {
@@ -97,7 +98,7 @@ public class SearchableDictionary extends AppCompatActivity
                                            MapDatabase.BUILDING_NAME};
 
             // Specify the corresponding layout elements where we want the columns to go
-            int[] to = new int[] { R.id.word, R.id.definition };
+            int[] to = new int[] { R.id.code, R.id.building};
 
             // Create a simple cursor adapter for the definitions and apply them to the ListView
             SimpleCursorAdapter words = new SimpleCursorAdapter(this, R.layout.result, cursor, from, to);
