@@ -8,6 +8,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 /**
  * Provides access to the dictionary database.
@@ -25,7 +26,7 @@ public class MapProvider extends ContentProvider
     public static final String BUILDING_MIME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
                                                        "/vnd.uncc.briannak.unccmap";
 
-    private MapDatabase mDictionary;
+    private MapDatabase mMap;
 
     // UriMatcher stuff
     private static final int SEARCH_CODE = 0;
@@ -63,7 +64,7 @@ public class MapProvider extends ContentProvider
     @Override
     public boolean onCreate() 
     {
-        mDictionary = new MapDatabase(getContext());
+        mMap = new MapDatabase(getContext());
         return true;
     }
 
@@ -107,27 +108,33 @@ public class MapProvider extends ContentProvider
 
     private Cursor getSuggestions(String query) 
     {
+        Log.e(TAG, query);
       query = query.toLowerCase();
       String[] columns = new String[] 
       {
           BaseColumns._ID,
           MapDatabase.SEARCH_CODE,
           MapDatabase.BUILDING_NAME,
+              MapDatabase.LATITUDE,
+              MapDatabase.LONGITUDE,
           SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID};
 
-          return mDictionary.getCodeMatches(query, columns);
+          return mMap.getCodeMatches(query, columns);
     }
 
     private Cursor search(String query) 
     {
+        Log.e(TAG, "Search:" + query);
       query = query.toLowerCase();
       String[] columns = new String[] 
       {
           BaseColumns._ID,
           MapDatabase.SEARCH_CODE,
-          MapDatabase.BUILDING_NAME};
+          MapDatabase.BUILDING_NAME,
+              MapDatabase.LATITUDE,
+              MapDatabase.LONGITUDE};
       
-      	  return mDictionary.getCodeMatches(query, columns);
+      	  return mMap.getCodeMatches(query, columns);
     }
 
     private Cursor getCode(Uri uri)
@@ -136,9 +143,11 @@ public class MapProvider extends ContentProvider
       String[] columns = new String[] 
       {
           MapDatabase.SEARCH_CODE,
-          MapDatabase.BUILDING_NAME};
+          MapDatabase.BUILDING_NAME,
+              MapDatabase.LATITUDE,
+              MapDatabase.LONGITUDE};
 
-          return mDictionary.getCode(rowId, columns);
+          return mMap.getCode(rowId, columns);
     }
 
     private Cursor refreshShortcut(Uri uri) 
@@ -152,7 +161,7 @@ public class MapProvider extends ContentProvider
           SearchManager.SUGGEST_COLUMN_SHORTCUT_ID,
           SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID};
 
-          return mDictionary.getCode(rowId, columns);
+          return mMap.getCode(rowId, columns);
     }
 
     /**
