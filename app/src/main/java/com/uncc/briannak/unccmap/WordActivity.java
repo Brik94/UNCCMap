@@ -16,6 +16,9 @@ import android.view.MenuItem;
 
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+
 
 
 /**
@@ -36,7 +39,7 @@ public class WordActivity extends AppCompatActivity
         }
 
         Uri uri = getIntent().getData();
-        Cursor cursor = managedQuery(uri, null, null, null, null);
+        Cursor cursor =  getContentResolver().query(uri, null, null, null, null);
 
         if (cursor == null) 
         {
@@ -48,12 +51,19 @@ public class WordActivity extends AppCompatActivity
 
             TextView word = (TextView) findViewById(R.id.code);
             TextView definition = (TextView) findViewById(R.id.building);
+            TextView coordinates = (TextView) findViewById(R.id.coordinates);
 
-            int wIndex = cursor.getColumnIndexOrThrow(MapDatabase.SEARCH_CODE);
-            int dIndex = cursor.getColumnIndexOrThrow(MapDatabase.BUILDING_NAME);
+            int codeIndex = cursor.getColumnIndexOrThrow(MapDatabase.SEARCH_CODE);
+            int bnameIndex = cursor.getColumnIndexOrThrow(MapDatabase.BUILDING_NAME);
 
-            word.setText(cursor.getString(wIndex));
-            definition.setText(cursor.getString(dIndex));
+
+            int latitude = cursor.getColumnIndexOrThrow(MapDatabase.LATITUDE);
+            int longitude = cursor.getColumnIndexOrThrow(MapDatabase.LONGITUDE);
+
+            word.setText(cursor.getString(codeIndex));
+            definition.setText(cursor.getString(bnameIndex));
+            coordinates.setText(cursor.getString(latitude) + " , " + cursor.getString(longitude));
+
         }
     }
 
