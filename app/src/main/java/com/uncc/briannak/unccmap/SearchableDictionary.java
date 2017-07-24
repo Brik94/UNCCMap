@@ -23,7 +23,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID;
 
 
 /**
@@ -45,6 +48,7 @@ public class SearchableDictionary extends AppCompatActivity implements OnMapRead
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        //Creates map fragment.
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -58,9 +62,7 @@ public class SearchableDictionary extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-        map.addMarker(new MarkerOptions().position(new LatLng(35.306105, -80.73445)).title("Marker"));
-        //map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-
+        mMap.setMapType(MAP_TYPE_HYBRID);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(35.306105, -80.73445), 15));
     }
 
@@ -78,8 +80,8 @@ public class SearchableDictionary extends AppCompatActivity implements OnMapRead
     {
         if (Intent.ACTION_VIEW.equals(intent.getAction()))
         {
-            // handles a click on a search suggestion; launches activity to show word
-            Intent wordIntent = new Intent(this, WordActivity.class);
+            //handles a click on a search suggestion; launches activity to show word
+            Intent wordIntent = new Intent(this, MoveMapActivity.class); //WordActivity.class
             wordIntent.setData(intent.getData());
             startActivity(wordIntent);
         } 
@@ -141,22 +143,19 @@ public class SearchableDictionary extends AppCompatActivity implements OnMapRead
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
 
-            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-            SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-            searchView.setIconifiedByDefault(false);
-            searchView.setIconified(false);
-        searchView.onActionViewExpanded();
-            //menu.findItem(R.id.search).setActionView(searchView);
-            //searchView.onActionViewExpanded();
-
-
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+        searchView.setIconified(false);
+        searchView.clearFocus();
         return true;
     }
 
