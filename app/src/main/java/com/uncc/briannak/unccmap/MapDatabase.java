@@ -31,6 +31,8 @@ public class MapDatabase
     //The columns we'll include in the dictionary table
     public static final String SEARCH_CODE = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public static final String BUILDING_NAME = SearchManager.SUGGEST_COLUMN_TEXT_2;
+    public static final String LATITUDE = "LATITUDE";
+    public static final String LONGITUDE ="LONGITUDE";
 
     private static final String DATABASE_NAME = "UNCCMAP";
     private static final String FTS_VIRTUAL_TABLE = "FTSACBUILDINGS";
@@ -59,6 +61,8 @@ public class MapDatabase
         HashMap<String,String> map = new HashMap<String,String>();
         map.put(SEARCH_CODE, SEARCH_CODE);
         map.put(BUILDING_NAME, BUILDING_NAME);
+        map.put(LATITUDE, LATITUDE);
+        map.put(LONGITUDE, LONGITUDE);
         map.put(BaseColumns._ID, "rowid AS " + BaseColumns._ID);
         map.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID, "rowid AS " + SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
         map.put(SearchManager.SUGGEST_COLUMN_SHORTCUT_ID, "rowid AS " + SearchManager.SUGGEST_COLUMN_SHORTCUT_ID);
@@ -81,7 +85,7 @@ public class MapDatabase
     }
 
     /**
-     * Returns a Cursor over all words that match the given query
+     * Returns a Cursor over all codes that match the given query
      *
      * @param query The string to search for
      * @param columns The columns to include, if null then all are included
@@ -93,6 +97,15 @@ public class MapDatabase
         String[] selectionArgs = new String[] {query+"*"};
 
         return query(selection, selectionArgs, columns);
+    }
+
+    public Cursor getLatitude(String query, String[] columns){
+        //String query = "SELECT LATITUDE FROM FTSACBUILDINGS WHERE category =" + SEARCH_CODE ;
+        String selection = SEARCH_CODE + " MATCH ?";
+        String[] selectionArgs = new String[] {query+"*"};
+
+        return query(selection, selectionArgs, columns);
+
     }
 
     /**
@@ -131,8 +144,8 @@ public class MapDatabase
     /**
      * This creates/opens the database.
      */
-    private static class MapDBOpenHelper extends SQLiteOpenHelper
-    {
+
+    private static class MapDBOpenHelper extends SQLiteOpenHelper {
         private final Context mHelperContext;
         private SQLiteDatabase mDatabase;
 
@@ -140,11 +153,16 @@ public class MapDatabase
          * declare a primary key. However, "rowid" is automatically used as a unique
          * identifier, so when making requests, we will use "_id" as an alias for "rowid"
          */
+
         private static final String FTS_TABLE_CREATE =
-                    "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE +
-                    " USING fts3 (" +
-                            SEARCH_CODE + ", " +
-                            BUILDING_NAME + ");";
+                "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE +
+                        " USING fts3 (" +
+                        SEARCH_CODE + ", " +
+                        BUILDING_NAME + ", " +
+                        LATITUDE + ", " +
+                        LONGITUDE + ")";
+
+
 
         MapDBOpenHelper(Context context)
         {
@@ -181,11 +199,12 @@ public class MapDatabase
             }).start();
         }
 
+
         private void loadWords() throws IOException 
         {
             Log.d(TAG, "Loading txt file data...");
             final Resources resources = mHelperContext.getResources();
-            InputStream inputStream = resources.openRawResource(R.raw.acbuildings);
+            InputStream inputStream = resources.openRawResource(R.raw.acbuildings2);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
             try 
@@ -195,7 +214,7 @@ public class MapDatabase
                 {
                     String[] strings = TextUtils.split(line, ",");
                     if (strings.length < 2) continue;
-                    long id = addBuilding(strings[0].trim(), strings[1].trim());
+                    long id = addBuilding(strings[0].trim(), strings[1].trim(), strings[2].trim(), strings[3].trim());
                     
                     if (id < 0) 
                     {
@@ -214,11 +233,13 @@ public class MapDatabase
          * Add a building to the database.
          * @return rowId or -1 if failed
          */
-        public long addBuilding(String searchCode, String building)
+        public long addBuilding(String searchCode, String building, String lat, String longz)
         {
             ContentValues initialValues = new ContentValues();
             initialValues.put(SEARCH_CODE, searchCode);
             initialValues.put(BUILDING_NAME, building);
+            initialValues.put(LATITUDE, lat);
+            initialValues.put(LONGITUDE, longz);
 
             return mDatabase.insert(FTS_VIRTUAL_TABLE, null, initialValues);
         }
