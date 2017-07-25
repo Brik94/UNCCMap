@@ -26,7 +26,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID;
 
 /**
+ * Activity that grabs the coordinates of the chosen item and proceeds to move the map to show that location.
+ *
  * Created by Bri on 7/23/2017.
+ * https://ctrlq.org/maps/address/#35.311707,-80.74305119999997
  */
 
 public class MoveMapActivity extends AppCompatActivity implements OnMapReadyCallback {

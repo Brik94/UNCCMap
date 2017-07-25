@@ -21,14 +21,14 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 /**
- * Contains logic to return specific words from the dictionary, and
- * load the dictionary table when it needs to be created.
+ * Logic to return specific search codes or building information from text files, and
+ * load the text files to tables in a database when they need to be created.
  */
 public class MapDatabase
 {
     private static final String TAG = "MapDatabase";
 
-    //The columns we'll include in the dictionary table
+    //The columns we'll include in the academic buildings table
     public static final String SEARCH_CODE = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public static final String BUILDING_NAME = SearchManager.SUGGEST_COLUMN_TEXT_2;
     public static final String LATITUDE = "LATITUDE";
@@ -97,15 +97,6 @@ public class MapDatabase
         String[] selectionArgs = new String[] {query+"*"};
 
         return query(selection, selectionArgs, columns);
-    }
-
-    public Cursor getLatitude(String query, String[] columns){
-        //String query = "SELECT LATITUDE FROM FTSACBUILDINGS WHERE category =" + SEARCH_CODE ;
-        String selection = SEARCH_CODE + " MATCH ?";
-        String[] selectionArgs = new String[] {query+"*"};
-
-        return query(selection, selectionArgs, columns);
-
     }
 
     /**
@@ -179,7 +170,7 @@ public class MapDatabase
         }
 
         /**
-         * Starts a thread to load the database table with words
+         * Starts a thread to load the database table with data
          */
         private void loadMapDB()
         {
@@ -230,7 +221,7 @@ public class MapDatabase
         }
 
         /**
-         * Add a building to the database.
+         * Add a building row to the database.
          * @return rowId or -1 if failed
          */
         public long addBuilding(String searchCode, String building, String lat, String longz)
